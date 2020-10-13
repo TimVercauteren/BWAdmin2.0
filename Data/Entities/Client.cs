@@ -8,7 +8,9 @@ namespace Data.Entities
     public class Client : EntityBase, IDeletable
     {
         public int ClientReference { get; set; }
+        public User User { get; set; }
         public PersonInfo Info { get; set; }
+
         public bool IsDeleted { get; set; }
         public string RekeningNummer { get; set; }
 
@@ -18,6 +20,7 @@ namespace Data.Entities
 
         // FK
         public Guid UserId { get; set; }
-        public User User { get; set; }
+        public Guid InfoId { get; set; }
+
     }
 }

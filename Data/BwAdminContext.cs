@@ -11,7 +11,11 @@ namespace Data
         public DbSet<Client> Clients { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<Offer> Offers { get; set; }
-        
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(@"Data Source = (localdb)\mssqllocaldb; Initial Catalog = BW2; Integrated Security = True", b => b.MigrationsAssembly("BWAdmin2.0"));
+        }
 
         #region ModelBuilding
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -24,14 +28,16 @@ namespace Data
 
             user.HasMany(c => c.Clients)
                 .WithOne(u => u.User)
-                .HasForeignKey(c => c.UserId);
+                .HasForeignKey(c => c.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
             #endregion
 
             #region ClientEntity
             var client = modelBuilder.Entity<Client>();
 
             client.HasOne(c => c.Info)
-                .WithOne();
+                .WithOne()
+                .HasForeignKey<Client>(c => c.InfoId);
 
             client.HasMany(c => c.Offers)
                 .WithOne(o => o.Client)
@@ -47,7 +53,9 @@ namespace Data
 
             invoice.HasOne(i => i.Offer)
                 .WithOne(o => o.Invoice)
-                .HasForeignKey<Offer>(o => o.InvoiceId);
+                .HasForeignKey<Offer>(o => o.InvoiceId)
+                .OnDelete(DeleteBehavior.NoAction);
+            
 
             invoice.HasMany(i => i.ExtraWorkItem)
                 .WithOne();
@@ -58,9 +66,11 @@ namespace Data
 
             offer.HasOne(o => o.Invoice)
                 .WithOne(i => i.Offer)
-                .HasForeignKey<Invoice>(i => i.OfferId);
+                .HasForeignKey<Invoice>(i => i.OfferId)
+                .OnDelete(DeleteBehavior.NoAction);
+            
 
-            invoice.HasMany(i => i.ExtraWorkItem)
+            offer.HasMany(o => o.WorkItems)
                 .WithOne();
             #endregion
 
