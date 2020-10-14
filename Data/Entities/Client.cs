@@ -12,7 +12,7 @@ namespace Data.Entities
         public PersonInfo Info { get; set; }
 
         public bool IsDeleted { get; set; }
-        public string RekeningNummer { get; set; }
+        public string AccountNumber { get; set; }
 
         // Many's
         public IEnumerable<Offer> Offers { get; set; }

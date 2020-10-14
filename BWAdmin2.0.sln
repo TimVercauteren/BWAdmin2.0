@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BWAdmin2.0", "BWAdmin2.0\BW
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "BWAdmin", "BWAdmin\BWAdmin.sqlproj", "{E310315D-9245-4327-8CE2-D5F515989FB2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{9C8F81A4-C619-47E2-BC19-37336EAD93AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", "{9C8F81A4-C619-47E2-BC19-37336EAD93AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{4BE04252-35B5-4ED3-AA9E-EA80A7E6F7F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +31,10 @@ Global
 		{9C8F81A4-C619-47E2-BC19-37336EAD93AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C8F81A4-C619-47E2-BC19-37336EAD93AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C8F81A4-C619-47E2-BC19-37336EAD93AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BE04252-35B5-4ED3-AA9E-EA80A7E6F7F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BE04252-35B5-4ED3-AA9E-EA80A7E6F7F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BE04252-35B5-4ED3-AA9E-EA80A7E6F7F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BE04252-35B5-4ED3-AA9E-EA80A7E6F7F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -22,8 +22,10 @@ namespace BWAdmin2._0.Migrations
             modelBuilder.Entity("Data.Entities.Client", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AccountNumber")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ClientReference")
                         .HasColumnType("int");
@@ -33,9 +35,6 @@ namespace BWAdmin2._0.Migrations
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
-
-                    b.Property<string>("RekeningNummer")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -53,7 +52,6 @@ namespace BWAdmin2._0.Migrations
             modelBuilder.Entity("Data.Entities.Invoice", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ClientId")
@@ -87,7 +85,6 @@ namespace BWAdmin2._0.Migrations
             modelBuilder.Entity("Data.Entities.Offer", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ClientId")
@@ -127,7 +124,6 @@ namespace BWAdmin2._0.Migrations
             modelBuilder.Entity("Data.Entities.PersonInfo", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("BtwNummer")
@@ -165,7 +161,6 @@ namespace BWAdmin2._0.Migrations
             modelBuilder.Entity("Data.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsDeleted")
@@ -191,7 +186,6 @@ namespace BWAdmin2._0.Migrations
             modelBuilder.Entity("Data.Entities.WorkItem", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")

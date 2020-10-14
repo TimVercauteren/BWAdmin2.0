@@ -55,7 +55,7 @@ namespace BWAdmin2._0.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     ClientReference = table.Column<int>(nullable: false),
                     IsDeleted = table.Column<bool>(nullable: false),
-                    RekeningNummer = table.Column<string>(nullable: true),
+                    AccountNumber = table.Column<string>(nullable: true),
                     UserId = table.Column<Guid>(nullable: false),
                     InfoId = table.Column<Guid>(nullable: false)
                 },
