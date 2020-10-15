@@ -33,6 +33,9 @@ namespace BWAdmin2._0
 
             services.AddScoped<IClientRepository, ClientRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IWorkItemRepository, WorkItemRepository>();
+            services.AddScoped<IInfoRepository, InfoRepository>();
+
 
             services.AddLogging(config =>
             {

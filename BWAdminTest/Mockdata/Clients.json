@@ -1,0 +1,39 @@
+{
+  "Clients": [
+    {
+      "id": "c5734997-c4e8-4c12-8696-930657b61586",
+      "clientReference": 1,
+      "accountNumber": "AccN01",
+      "info": {
+        "id": "eadfbe2d-f074-4cf0-ad8c-6450a5975bc1",
+        "name": "Tim",
+        "straatNaam": "Kerkstraat",
+        "huisNummer": "1",
+        "busNummer": "W4",
+        "postcode": "9240",
+        "gemeente": "Zele",
+        "email": "tim.vercauteren@gmail.com",
+        "telefoonNummer": "0498836512",
+        "btwNummer": "BE00150120025"
+      }
+    },
+    {
+      "id": "bbbc3067-5470-4922-a278-d3c716afaa48",
+      "clientReference": 1,
+      "accountNumber": "AccN02",
+      "info": {
+        "id": "240a7dfa-3635-41c6-9b15-35cb92beb37f",
+        "name": "AC Mainil",
+        "straatNaam": "Kerkstraat",
+        "huisNummer": "5",
+        "busNummer": "W4",
+        "postcode": "9240",
+        "gemeente": "Zele",
+        "email": "ACMAINIL@gmail.com",
+        "telefoonNummer": "0498886512",
+        "btwNummer": "BE00150120025"
+      }
+    }
+  ]
+}
+  

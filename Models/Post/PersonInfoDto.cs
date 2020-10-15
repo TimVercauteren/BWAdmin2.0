@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Models.Post
 {
-    public class PersonInfoDto
+    public class PersonInfoDto : IDto
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

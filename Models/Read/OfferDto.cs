@@ -1,12 +1,11 @@
-﻿using Data.Enums;
-using Data.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
-namespace Data.Entities
+namespace Models.Read
 {
-    public class Offer : EntityBase, IDocument, IDeletable
+    public class OfferDto : IDto
     {
         public string OfferNumber { get; set; }
         public DateTime ExperationDate { get; set; }
@@ -15,24 +14,16 @@ namespace Data.Entities
         public bool IsDeleted { get; set; }
         public decimal VatPercentage { get; set; }
         public decimal PrePaid { get; set; }
-
-
-        // Manys
-        public IEnumerable<WorkItem> WorkItems { get; set; }
-
-        // FK
+        public IEnumerable<WorkItemDto> WorkItems { get; set; }
         public Guid ClientId { get; set; }
-        public Client Client { get; set; }
-
         public Guid InvoiceId { get; set; }
-        public Invoice Invoice { get; set; }
 
         public decimal CalculateTotalPrice()
         {
-            decimal price = 0m;
+            var price = 0m;
             this.WorkItems.ToList().ForEach(x => price += x.BrutoPrijs);
 
-                return price;
+            return price;
         }
     }
 }

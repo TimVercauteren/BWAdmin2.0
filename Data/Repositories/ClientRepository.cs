@@ -1,65 +1,79 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Data.Entities;
 using Data.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Models.Exceptions;
+using Models.Post;
+using Models.Read;
 
 namespace Data.Repositories
 {
-    public class ClientRepository : IClientRepository
+    public class ClientRepository : Repository<Client>, IClientRepository
     {
-        private readonly BwAdminContext _context;
-        private readonly IMapper _mapper;
         private readonly IUserRepository _userRepository;
 
-        public ClientRepository(BwAdminContext context, IMapper mapper, IUserRepository userRepository)
+        public ClientRepository(BwAdminContext context, IMapper mapper, IUserRepository userRepository) : base(context, mapper)
         {
-            _context = context;
-            _mapper = mapper;
             _userRepository = userRepository;
         }
 
-        public async Task<IEnumerable<Client>> GetAll()
+        public async Task<IEnumerable<ClientDto>> GetAll()
         {
-            return await _context.Clients.ToListAsync();
+            return await Context.Clients
+                .Where(c => !c.IsDeleted)
+                .Include(c => c.Info)
+                .Select(x => Mapper.Map<ClientDto>(x)).ToListAsync();
         }
 
-        public async Task<Client> GetClient(Guid id)
+        public async Task<ClientDetailDto> GetClient(Guid id)
         {
-            var client = await _context.Clients
+            var client = await Context.Clients
                 .Include(c => c.Info)
                 .Include(c => c.Offers)
                 .Include(c => c.Invoices)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
-            if (client == null) throw new NotFoundException($"Client with id {id} was not found");
-            return client;
+            if (client == null) throw new NotFoundException(id.ToString());
+            if (client.IsDeleted) throw new BusinessValidationException($"This client has been deleted, contact support to restore it");
+
+            return Mapper.Map<ClientDetailDto>(client);
         }
 
-        public async Task<Client> AddClient(Models.Post.ClientDto clientDto)
+        public async Task<Client> AddClient(Client client)
         {
             var userId = await _userRepository.GetDefaultUserId();
 
-            if (clientDto.Id == Guid.Empty)
+
+            if (client.Id == Guid.Empty)
             {
-                clientDto.Id = Guid.NewGuid();
+                client.Id = Guid.NewGuid();
             }
 
-            if (clientDto.Info.Id == Guid.Empty)
+            if (client.Info.Id == Guid.Empty)
             {
-                clientDto.Info.Id = Guid.NewGuid();
+                client.Info.Id = Guid.NewGuid();
             }
-            var mappedClient = _mapper.Map<Client>(clientDto);
 
-            mappedClient.UserId = userId;
-            await _context.Clients.AddAsync(mappedClient);
-            await _context.SaveChangesAsync();
+            client.UserId = userId;
+            client.ClientReference = GetLastUsedClientReference();
 
-            return mappedClient;
+            await Context.Clients.AddAsync(client);
+            await Context.SaveChangesAsync();
+
+            return client;
         }
+
+        #region Privates
+
+        private int GetLastUsedClientReference()
+        {
+            return Context.Clients.Select(x => x.ClientReference).Max() + 1;
+        }
+
+        #endregion
     }
 }

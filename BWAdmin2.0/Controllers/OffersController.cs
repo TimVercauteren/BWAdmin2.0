@@ -1,51 +1,52 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BWAdmin2._0.Setup;
 using Data.Entities;
+using Data.Interfaces;
 using Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Models;
 using Models.Post;
 using Models.Read;
 
 namespace BWAdmin2._0.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
-    public class ClientsController : ControllerBase
+    [Route("[controller]/{clientId}")]
+    public class OffersController : ControllerBase
     {
         private readonly ILogger<ClientsController> _logger;
-        private readonly IClientRepository _repository;
+        private readonly IOfferRepository _repository;
         private readonly IMapper _mapper;
-        private readonly IInfoRepository _infoRepository;
 
-        public ClientsController(ILogger<ClientsController> logger, IClientRepository repository, IMapper mapper, IInfoRepository infoRepository)
+        public OffersController(ILogger<ClientsController> logger, IOfferRepository repository, IMapper mapper)
         {
             _logger = logger;
             _repository = repository;
             _mapper = mapper;
-            _infoRepository = infoRepository;
         }
 
-        [ProducesResponseType(typeof(IEnumerable<ClientDto>), 200)]
+        [ProducesResponseType(typeof(IEnumerable<OfferDto>), 200)]
         [ProducesDefaultResponseType(typeof(ApiError))]
         [HttpGet("all")]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromRoute] Guid clientId)
         {
-            var result = await _repository.GetAll();
+            var result = await _repository.GetAllForClient(clientId);
 
-            return Ok(result);
+            return Ok(_mapper.Map<OfferDto>(result));
         }
 
-        [ProducesResponseType(typeof(ClientDetailDto), 200)]
+        [ProducesResponseType(typeof(OfferDto), 200)]
         [ProducesDefaultResponseType(typeof(ApiError))]
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] Guid id)
         {
-            var result = await _repository.GetClient(id);
-            return Ok(result);
+            var result = await _repository.GetEntity<Offer>(id);
+            return Ok(MapEntity(result));
         }
 
         [ProducesResponseType(typeof(ClientDto), 201)]
@@ -77,6 +78,16 @@ namespace BWAdmin2._0.Controllers
             await _repository.DeleteEntity<Client>(id);
 
             return Ok();
+        }
+
+        private IDto MapEntity(IEntity entity)
+        {
+            return _mapper.Map<IDto>(entity);
+        }
+
+        private IEntity MapData(IDto dataObject)
+        {
+            return _mapper.Map<IEntity>(dataObject);
         }
     }
 }
