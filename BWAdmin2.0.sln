@@ -21,6 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{70E6F78B-8
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfferteTemplater", "DocumentGenerator\OfferteTemplater.csproj", "{51D0F2BD-31D8-42E2-9583-C08993A7729D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfGenerator", "PdfGenerator\PdfGenerator.csproj", "{0588D051-55BF-431E-ABDA-0CA4940149CA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{51D0F2BD-31D8-42E2-9583-C08993A7729D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51D0F2BD-31D8-42E2-9583-C08993A7729D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51D0F2BD-31D8-42E2-9583-C08993A7729D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0588D051-55BF-431E-ABDA-0CA4940149CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0588D051-55BF-431E-ABDA-0CA4940149CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0588D051-55BF-431E-ABDA-0CA4940149CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0588D051-55BF-431E-ABDA-0CA4940149CA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +70,7 @@ Global
 		{4BE04252-35B5-4ED3-AA9E-EA80A7E6F7F6} = {70E6F78B-83C1-4064-995C-3F38C70FEE08}
 		{CEEA5AA0-F14A-4591-8DB8-03A02884F810} = {AEC1D5B3-9147-4E29-B2BF-30EB8ED5CD2D}
 		{51D0F2BD-31D8-42E2-9583-C08993A7729D} = {70E6F78B-83C1-4064-995C-3F38C70FEE08}
+		{0588D051-55BF-431E-ABDA-0CA4940149CA} = {70E6F78B-83C1-4064-995C-3F38C70FEE08}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F1D2A2AA-1FAB-42E6-B54D-F3E0CB089E0A}

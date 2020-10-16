@@ -9,7 +9,7 @@ namespace OfferteTemplater.Pages
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
-        public OfferDocumentModel Content { get; set; }
+        public new OfferDocumentModel Content { get; set; }
 
         public IndexModel(ILogger<IndexModel> logger)
         {
@@ -24,10 +24,6 @@ namespace OfferteTemplater.Pages
         public void OnPost()
         {
             var serializeExample = JsonSerializer.Serialize(OfferteModelsForTesting.TestModel());
-            //var options = new JsonSerializerOptions
-            //{
-            //    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            //};
             var itemsJson = Request.Form["items"].First();
 
             Content = JsonSerializer.Deserialize<OfferDocumentModel>(itemsJson);

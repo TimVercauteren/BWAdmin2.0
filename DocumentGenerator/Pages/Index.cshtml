@@ -44,7 +44,7 @@
 
 
         <div class="media">
-            <img src="img/BWFull.png" alt="BwLogo" />
+            <img src="img/BWFull.png" alt="BwLogo"/>
             <div class="media-body">
                 <h1 class="brentgeel right">OFFERTE</h1>
                 <div class="row">&nbsp;</div>
@@ -126,42 +126,42 @@
         <div>
             <table class="table table-borderless">
                 <thead>
-                    <tr>
-                        <td colspan="9" class="left bold">OMSCHRIJVING WERKEN</td>
-                        <td colspan="3" class="right bold">BEDRAG</td>
-                    </tr>
+                <tr>
+                    <td colspan="9" class="left bold">OMSCHRIJVING WERKEN</td>
+                    <td colspan="3" class="right bold">BEDRAG</td>
+                </tr>
                 </thead>
                 <tbody>
-                    @foreach (var workItem in Model.Content.WorkItems)
-                    {
-                        <tr>
-                            <td colspan="9">@workItem.Description</td>
-                            <td colspan="3" class="right">&euro;@workItem.BrutoPrijs</td>
-                        </tr>
-                    }
+                @foreach (var workItem in Model.Content.WorkItems)
+                {
                     <tr>
-                        <td colspan="9" class="bold left">Kostprijs exclusief BTW</td>
-                        <td colspan="3" class="right">&euro;@this.Model.Content.Pricing.BrutoPrice</td>
+                        <td colspan="9">@workItem.Description</td>
+                        <td colspan="3" class="right">&euro;@workItem.BrutoPrijs</td>
                     </tr>
-                    <tr>
-                        <td colspan="9" class="right"> @this.Model.Content.Pricing.VatPercentageString </td>
-                        <td colspan="3" class="right">&euro;@this.Model.Content.Pricing.VatPrice</td>
-                    </tr>
-                    <tr>
-                        <td colspan="9" class="right bold"> TOTAAL </td>
-                        <td colspan="3" class="right bold">&euro;@this.Model.Content.Pricing.TotalPrice</td>
-                    </tr>
-                    <tr>
-                        <td colspan="9" class="bold left">Betaalschema:</td>
-                    </tr>
-                    <tr>
-                        <td colspan="9" class="kleine-letters left">Voorschot, te betalen uiterlijk binnen de twee weken na ondertekening bestelbon:</td>
-                        <td colspan="3" class="kleine-letters right">&euro;@this.Model.Content.Pricing.PrepaidPrice</td>
-                    </tr>
-                    <tr>
-                        <td colspan="9" class="kleine-letters left">Saldo, te betalen bij oplevering van de werken:</td>
-                        <td colspan="3" class="kleine-letters right">&euro;@this.Model.Content.Pricing.TotalPriceMinusPrepaid</td>
-                    </tr>
+                }
+                <tr>
+                    <td colspan="9" class="bold left">Kostprijs exclusief BTW</td>
+                    <td colspan="3" class="right">&euro;@this.Model.Content.Pricing.BrutoPrice</td>
+                </tr>
+                <tr>
+                    <td colspan="9" class="right"> @this.Model.Content.Pricing.VatPercentageString </td>
+                    <td colspan="3" class="right">&euro;@this.Model.Content.Pricing.VatPrice</td>
+                </tr>
+                <tr>
+                    <td colspan="9" class="right bold"> TOTAAL </td>
+                    <td colspan="3" class="right bold">&euro;@this.Model.Content.Pricing.TotalPrice</td>
+                </tr>
+                <tr>
+                    <td colspan="9" class="bold left">Betaalschema:</td>
+                </tr>
+                <tr>
+                    <td colspan="9" class="kleine-letters left">Voorschot, te betalen uiterlijk binnen de twee weken na ondertekening bestelbon:</td>
+                    <td colspan="3" class="kleine-letters right">&euro;@this.Model.Content.Pricing.PrepaidPrice</td>
+                </tr>
+                <tr>
+                    <td colspan="9" class="kleine-letters left">Saldo, te betalen bij oplevering van de werken:</td>
+                    <td colspan="3" class="kleine-letters right">&euro;@this.Model.Content.Pricing.TotalPriceMinusPrepaid</td>
+                </tr>
                 </tbody>
             </table>
         </div>
