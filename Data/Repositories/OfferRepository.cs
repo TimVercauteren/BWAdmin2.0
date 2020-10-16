@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Data.Entities;
+using Data.Repositories.Abstracts;
 using Data.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Models.Exceptions;

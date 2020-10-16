@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Data.Entities;
+using Data.Repositories.Abstracts;
 using Data.Repositories.Interfaces;
 
 namespace Data.Repositories

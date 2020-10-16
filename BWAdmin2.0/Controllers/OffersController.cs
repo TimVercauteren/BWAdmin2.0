@@ -58,7 +58,7 @@ namespace BWAdmin2._0.Controllers
             return CreatedAtAction(nameof(Get), new { id = result.Id }, MapEntity(result));
         }
 
-        [HttpPut("{Id}")]
+        [HttpPut("{id}")]
         [ProducesResponseType(typeof(OfferDto), 200)]
         [ProducesDefaultResponseType(typeof(ApiError))]
         public async Task<IActionResult> UpdateClient([FromBody] OfferDto offer, [FromRoute] Guid offerId)
@@ -68,7 +68,7 @@ namespace BWAdmin2._0.Controllers
             return Ok(MapEntity(result));
         }
 
-        [HttpDelete("{Id}")]
+        [HttpDelete("{id}")]
         [ProducesResponseType(200)]
         [ProducesDefaultResponseType(typeof(ApiError))]
         public async Task<IActionResult> DeleteClient([FromRoute] Guid id)
@@ -81,11 +81,6 @@ namespace BWAdmin2._0.Controllers
         private IDto MapEntity(IEntity entity)
         {
             return _mapper.Map<IDto>(entity);
-        }
-
-        private IEntity MapData(IDto dataObject)
-        {
-            return _mapper.Map<IEntity>(dataObject);
         }
     }
 }

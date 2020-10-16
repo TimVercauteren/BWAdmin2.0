@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using AutoMapper;
 using Data.Entities;
 using Models.Read;
 
@@ -8,7 +9,6 @@ namespace BWAdmin2._0.Mappings
     {
         public MappingProfile()
         {
-            
             CreateMap<Client, Models.Post.ClientDto>().ReverseMap();
             CreateMap<Client, ClientDetailDto>();
 

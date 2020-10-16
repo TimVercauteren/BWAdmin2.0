@@ -6,7 +6,7 @@ using Data.Interfaces;
 using Data.Repositories.Interfaces;
 using Models.Exceptions;
 
-namespace Data.Repositories
+namespace Data.Repositories.Abstracts
 {
     public abstract class Repository<T> : IRepository where T : EntityBase 
     {
