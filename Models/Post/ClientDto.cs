@@ -9,5 +9,6 @@ namespace Models.Post
         public string AccountNumber { get; set; }
         public Guid InfoId { get; set; }
         public PersonInfoDto Info { get; set; }
+        public string ClientReference { get; set; }
     }
 }

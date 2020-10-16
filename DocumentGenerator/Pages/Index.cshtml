@@ -1,0 +1,197 @@
+﻿@page
+@model IndexModel
+@{
+    <style type="text/css">
+        .right {
+            text-align: right
+        }
+
+        .left {
+            text-align: left
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .bold {
+            font-weight: bold
+        }
+
+        .brentgeel {
+            color: rgb(249,177,4)
+        }
+
+        .brentgeel-background {
+            background-color: rgb(249, 177, 4);
+        }
+
+        .kleine-letters {
+            font-size: small
+        }
+    </style>
+    @if (Model.Content == null)
+    {
+        <div>
+            <form id="invoice-form" method="post">
+                <textarea name="items" id="items-box"></textarea>
+                <input type="submit" id="submit-button" value="Submit" />
+            </form>
+        </div>
+    }
+    else
+    {
+
+
+        <div class="media">
+            <img src="img/BWFull.png" alt="BwLogo" />
+            <div class="media-body">
+                <h1 class="brentgeel right">OFFERTE</h1>
+                <div class="row">&nbsp;</div>
+                <div class="row">
+                    <div class="offset-2 col-5 bold right">DATUM</div>
+                    <div class="col-5 right">@this.Model.Content.Date</div>
+                </div>
+                <div class="row">
+                    <div class="offset-2 col-5 bold right">VERVALDATUM</div>
+                    <div class="col-5 right">@this.Model.Content.ExpirationDate</div>
+                </div>
+                <div class="row">
+                    <div class="offset-2 col-5 bold right">NUMMER</div>
+                    <div class="col-5 right">@this.Model.Content.OfferNumber</div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="offset-6 col-3 right bold">
+                Klant:
+            </div>
+            <div class="col-3 right">@this.Model.Content.ClientInfo.Info.Name</div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                @this.Model.Content.UserInfo.StraatNaam @this.Model.Content.UserInfo.HuisNummer
+            </div>
+            <div class="col-3 right bold">
+                Adres:
+            </div>
+            <div class="col-3 right">@this.Model.Content.ClientInfo.Info.StraatNaam @this.Model.Content.ClientInfo.Info.HuisNummer @this.Model.Content.ClientInfo.Info.BusNummer</div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                @this.Model.Content.UserInfo.Postcode @this.Model.Content.UserInfo.Gemeente
+            </div>
+            <div class="offset-3 col-3 right ">
+                @this.Model.Content.ClientInfo.Info.Postcode @this.Model.Content.ClientInfo.Info.Gemeente
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                @this.Model.Content.UserInfo.TelefoonNummer
+            </div>
+            <div class="col-3 right bold">
+                Ref. klant:
+            </div>
+            <div class="col-3 right">@this.Model.Content.ClientInfo.ClientReference</div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                BTW: @this.Model.Content.UserInfo.BtwNummer
+            </div>
+            <div class="col-3 right bold">
+                Telefoon:
+            </div>
+            <div class="col-3 right">@this.Model.Content.ClientInfo.Info.TelefoonNummer</div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                IBAN: @this.Model.Content.UserInfo.BankNummer
+            </div>
+            <div class="col-3 right bold">
+                Btw nr:
+            </div>
+            <div class="col-3 right">@this.Model.Content.ClientInfo.Info.BtwNummer</div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                @this.Model.Content.UserInfo.Email
+            </div>
+            <div class="col-3 right bold">
+                Email:
+            </div>
+            <div class="col-3 right">@this.Model.Content.ClientInfo.Info.Email</div>
+        </div>
+        <div class="row">&nbsp;</div>
+        <div class="row">&nbsp;</div>
+        <div>
+            <table class="table table-borderless">
+                <thead>
+                    <tr>
+                        <td colspan="9" class="left bold">OMSCHRIJVING WERKEN</td>
+                        <td colspan="3" class="right bold">BEDRAG</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var workItem in Model.Content.WorkItems)
+                    {
+                        <tr>
+                            <td colspan="9">@workItem.Description</td>
+                            <td colspan="3" class="right">&euro;@workItem.BrutoPrijs</td>
+                        </tr>
+                    }
+                    <tr>
+                        <td colspan="9" class="bold left">Kostprijs exclusief BTW</td>
+                        <td colspan="3" class="right">&euro;@this.Model.Content.Pricing.BrutoPrice</td>
+                    </tr>
+                    <tr>
+                        <td colspan="9" class="right"> @this.Model.Content.Pricing.VatPercentageString </td>
+                        <td colspan="3" class="right">&euro;@this.Model.Content.Pricing.VatPrice</td>
+                    </tr>
+                    <tr>
+                        <td colspan="9" class="right bold"> TOTAAL </td>
+                        <td colspan="3" class="right bold">&euro;@this.Model.Content.Pricing.TotalPrice</td>
+                    </tr>
+                    <tr>
+                        <td colspan="9" class="bold left">Betaalschema:</td>
+                    </tr>
+                    <tr>
+                        <td colspan="9" class="kleine-letters left">Voorschot, te betalen uiterlijk binnen de twee weken na ondertekening bestelbon:</td>
+                        <td colspan="3" class="kleine-letters right">&euro;@this.Model.Content.Pricing.PrepaidPrice</td>
+                    </tr>
+                    <tr>
+                        <td colspan="9" class="kleine-letters left">Saldo, te betalen bij oplevering van de werken:</td>
+                        <td colspan="3" class="kleine-letters right">&euro;@this.Model.Content.Pricing.TotalPriceMinusPrepaid</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <p class="col bold left">Gelieve deze bestelbon ondertekend voor akkoord terug te bezorgen aan Brent Wiels.</p>
+        </div>
+        <div class="row">
+            <div class="col">
+                Voor akkoord,
+            </div>
+        </div>
+        <div class="row">&nbsp;</div>
+        <div class="row">&nbsp;</div>
+        <div class="row">&nbsp;</div>
+        <div class="row">
+            <div class="col-3">Handtekening klant</div>
+            <div class="col-3">Datum:</div>
+        </div>
+        <div class="row">&nbsp;</div>
+        <div class="row">
+            <div class="col">
+                Wij danken u uitdrukkelijk voor deze offerte-aanvraag en kijken uit naar de uitvoering van deze opdracht.
+            </div>
+        </div>
+        <div class="row">&nbsp;</div>
+        <div class="row">
+            <div class="col kleine-letters">Deze bestelbon en de daaruit voortvloeiende factuur alsook de betaling en onderliggende rechtsverhouding is onderhevig </div>
+        </div>
+        <div class="row">
+            <div class="col kleine-letters">aan de algemene voorwaarden van BRENT WIELS, waarmee de klant zich uitdrukkelijk akkoord heeft verklaard.</div>
+        </div>
+    }
+}

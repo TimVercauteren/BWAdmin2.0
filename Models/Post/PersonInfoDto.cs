@@ -14,5 +14,6 @@ namespace Models.Post
         public string Email { get; set; }
         public string TelefoonNummer { get; set; }
         public string BtwNummer { get; set; }
+        public string BankNummer { get; set; }
     }
 }
