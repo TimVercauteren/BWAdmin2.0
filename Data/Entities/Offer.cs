@@ -1,5 +1,4 @@
-﻿using Data.Enums;
-using Data.Interfaces;
+﻿using Data.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;

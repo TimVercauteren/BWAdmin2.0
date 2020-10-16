@@ -1,6 +1,6 @@
 ﻿namespace Data.Repositories.Interfaces
 {
-    public interface IWorkItemRepository : IRepository
+    public interface IInvoiceRepository : IRepository
     {
     }
 }

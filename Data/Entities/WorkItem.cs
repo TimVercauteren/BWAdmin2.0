@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Data.Entities
 {
@@ -8,9 +9,10 @@ namespace Data.Entities
         public decimal NettoPrice { get; set; }
         public decimal MarginPercentage { get; set; }
 
-
-
         [NotMapped]
         public decimal BrutoPrijs => NettoPrice + (NettoPrice * MarginPercentage);
+
+        public Guid OfferId { get; set; }
+        public Guid InvoiceId { get; set; }
     }
 }

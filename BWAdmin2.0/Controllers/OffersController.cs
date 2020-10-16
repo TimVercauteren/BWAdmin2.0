@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BWAdmin2._0.Setup;
@@ -10,13 +9,12 @@ using Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Models;
-using Models.Post;
 using Models.Read;
 
 namespace BWAdmin2._0.Controllers
 {
     [ApiController]
-    [Route("[controller]/{clientId}")]
+    [Route("[controller]")]
     public class OffersController : ControllerBase
     {
         private readonly ILogger<ClientsController> _logger;
@@ -32,7 +30,7 @@ namespace BWAdmin2._0.Controllers
 
         [ProducesResponseType(typeof(IEnumerable<OfferDto>), 200)]
         [ProducesDefaultResponseType(typeof(ApiError))]
-        [HttpGet("all")]
+        [HttpGet("{clientId}/all")]
         public async Task<IActionResult> GetAll([FromRoute] Guid clientId)
         {
             var result = await _repository.GetAllForClient(clientId);
@@ -40,6 +38,7 @@ namespace BWAdmin2._0.Controllers
             return Ok(_mapper.Map<OfferDto>(result));
         }
 
+        // todo :: offerte full dto for pdf Generator
         [ProducesResponseType(typeof(OfferDto), 200)]
         [ProducesDefaultResponseType(typeof(ApiError))]
         [HttpGet]
@@ -49,33 +48,32 @@ namespace BWAdmin2._0.Controllers
             return Ok(MapEntity(result));
         }
 
-        [ProducesResponseType(typeof(ClientDto), 201)]
+        [ProducesResponseType(typeof(OfferDto), 201)]
         [ProducesDefaultResponseType(typeof(ApiError))]
-        [HttpPost]
-        public async Task<IActionResult> AddClient([FromBody] ClientDto client)
+        [HttpPost("{clientId}")]
+        public async Task<IActionResult> AddOfferForClient([FromBody] OfferDto offer, [FromRoute] Guid clientId)
         {
+            var result = await _repository.AddOfferWithItems(_mapper.Map<Offer>(offer), clientId);
 
-            var result = await _repository.AddClient(_mapper.Map<Client>(client));
-
-            return CreatedAtAction(nameof(Get), new { id = result.Id }, _mapper.Map<ClientDto>(result));
+            return CreatedAtAction(nameof(Get), new { id = result.Id }, MapEntity(result));
         }
 
-        [HttpPut("{infoId}")]
-        [ProducesResponseType(typeof(PersonInfoDto), 200)]
+        [HttpPut("{Id}")]
+        [ProducesResponseType(typeof(OfferDto), 200)]
         [ProducesDefaultResponseType(typeof(ApiError))]
-        public async Task<IActionResult> UpdateClient([FromBody] PersonInfoDto clientInfo, [FromRoute] Guid infoId)
+        public async Task<IActionResult> UpdateClient([FromBody] OfferDto offer, [FromRoute] Guid offerId)
         {
-            var result = await _infoRepository.UpdateEntity(infoId, _mapper.Map<PersonInfo>(clientInfo));
+            var result = await _repository.UpdateEntity(offerId, _mapper.Map<PersonInfo>(offer));
 
-            return Ok(result);
+            return Ok(MapEntity(result));
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{Id}")]
         [ProducesResponseType(200)]
         [ProducesDefaultResponseType(typeof(ApiError))]
         public async Task<IActionResult> DeleteClient([FromRoute] Guid id)
         {
-            await _repository.DeleteEntity<Client>(id);
+            await _repository.DeleteEntity<Offer>(id);
 
             return Ok();
         }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace BWAdmin2._0.Setup
+﻿namespace BWAdmin2._0.Setup
 {
     public class BwInfo
     {
