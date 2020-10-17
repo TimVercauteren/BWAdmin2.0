@@ -13,6 +13,7 @@ using BWAdminUi.Server.Repositories;
 using BWAdminUi.Server.Repositories.Interfaces;
 using BWAdminUi.Server.Setup;
 using Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
 
@@ -66,6 +67,15 @@ namespace BWAdminUi.Server
             services.AddAuthentication()
                 .AddIdentityServerJwt();
 
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequiredLength = 5;
+            });
+
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
@@ -90,7 +100,7 @@ namespace BWAdminUi.Server
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "BWAdmin V1");
-                c.RoutePrefix = string.Empty;
+                //c.RoutePrefix = string.Empty;
             });
 
             app.UseHttpsRedirection();

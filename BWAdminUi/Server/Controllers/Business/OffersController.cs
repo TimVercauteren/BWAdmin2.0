@@ -14,7 +14,7 @@ using Models.Read;
 namespace BWAdminUi.Server.Controllers.Business
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class OffersController : ControllerBase
     {
         private readonly ILogger<ClientsController> _logger;

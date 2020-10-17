@@ -72,6 +72,11 @@ namespace BWAdminUi.Server.Repositories
 
         private int GetLastUsedClientReference()
         {
+            if (!Context.Clients.Any())
+            {
+                return 1;
+            }
+
             return Context.Clients.Select(x => x.ClientReference).Max() + 1;
         }
 

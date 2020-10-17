@@ -11,7 +11,7 @@ using Models.Read;
 
 namespace BWAdminUi.Server.Controllers.Business
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class WorkItemsController : ControllerBase
     {

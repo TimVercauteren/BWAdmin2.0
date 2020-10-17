@@ -13,7 +13,7 @@ using Models.Read;
 namespace BWAdminUi.Server.Controllers.Business
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class ClientsController : ControllerBase
     {
         private readonly ILogger<ClientsController> _logger;
