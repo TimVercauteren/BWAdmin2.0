@@ -1,6 +1,8 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace BWAdmin2._0
+namespace BWAdminUi.Shared
 {
     public class WeatherForecast
     {
@@ -8,8 +10,8 @@ namespace BWAdmin2._0
 
         public int TemperatureC { get; set; }
 
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-
         public string Summary { get; set; }
+
+        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
     }
 }
