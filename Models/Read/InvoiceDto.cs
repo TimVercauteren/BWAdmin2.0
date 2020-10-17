@@ -12,5 +12,6 @@ namespace Models.Read
         public Guid ClientId { get; set; }
         public IEnumerable<WorkItemDto> ExtraWorkItem { get; set; }
         public string FileName { get; set; }
+        public string InvoiceNumber { get; set; }
     }
 }

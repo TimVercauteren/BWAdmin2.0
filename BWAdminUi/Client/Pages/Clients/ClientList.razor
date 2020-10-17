@@ -8,7 +8,7 @@
 
 <h1>Klanten overzicht</h1>
 
-@if (_clients == null)
+@if (_filteredClients == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -25,7 +25,13 @@ else
         </tr>
         </thead>
         <tbody>
-        @foreach (var client in _clients)
+        <tr>
+            <td></td>
+            <td width="240">
+                <input width="70" @onchange="OnNameChange"  />
+            </td>
+        </tr>
+        @foreach (var client in _filteredClients)
         {
             <tr>
                 <td>Todo go to detail</td>
@@ -40,18 +46,36 @@ else
 }
 
 @code {
-    private List<ClientDto> _clients;
+    private List<ClientDto> _filteredClients;
+    private List<ClientDto> _allClients;
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            _clients = await Http.GetFromJsonAsync<List<ClientDto>>("api/clients/all");
+            _allClients = await Http.GetFromJsonAsync<List<ClientDto>>("api/clients/all");
+            _filteredClients = _allClients;
         }
         catch (AccessTokenNotAvailableException exception)
         {
             exception.Redirect();
         }
+    }
+
+    private void OnNameChange(ChangeEventArgs e)
+    {
+        _filteredClients = SortByName(e.Value.ToString()).ToList();
+
+    }
+
+    private IEnumerable<ClientDto> SortByName(string sortString) 
+    {
+        if (string.IsNullOrEmpty(sortString))
+        {
+            return _allClients;
+        }
+
+        return _allClients.Where(x => x.Info.Name.Contains(sortString));
     }
 
 }

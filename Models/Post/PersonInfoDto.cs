@@ -15,5 +15,7 @@ namespace Models.Post
         public string TelefoonNummer { get; set; }
         public string BtwNummer { get; set; }
         public string BankNummer { get; set; }
+
+        public string FullAddress => this.StraatNaam + this.HuisNummer + this.BusNummer + this.Postcode + this.Gemeente;
     }
 }

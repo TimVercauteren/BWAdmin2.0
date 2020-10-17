@@ -1,0 +1,190 @@
+﻿@page "/clients/detail/{id}"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using BWAdminUi.Shared
+@using Models.Post
+@using Models.Read
+@attribute [Authorize]
+@inject HttpClient Http
+
+@if (_customer == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="container">
+        <div class="row">
+            <h1>Detail klant</h1>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <p>Naam: @_customer.Info.Name</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <p> Adres: @_customer.Info.FullAddress </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <p>Btwnummer: @_customer.Info.BtwNummer</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <p>Email: @_customer.Info.Email</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <p>Telefoon: @_customer.Info.TelefoonNummer</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm">
+                <button class="btn btn-success" @onclick="AddOfferteVoorKlant">Maak offerte</button>
+            </div>
+            <div class="col-sm">
+                <button class="btn btn-danger" @onclick="DeleteCustomer">Verwijder Klant</button>
+            </div>
+        </div>
+        <hr />
+        @if (_customer.Offers.Any())
+        {
+            <div class="row">
+                <h2>Offertes</h2>
+            </div>
+            <table class="table col-sm">
+                <thead>
+                    <tr>
+                        <th>Offertenummer</th>
+                        <th>Datum aanmaak</th>
+                        <th>Vervaldatum</th>
+                        <th>Maak Factuur</th>
+                        <th>Preview</th>
+                        <th>Download</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var offerte in _customer.Offers)
+                    {
+                        <tr>
+                            <td>@offerte.OfferNumber</td>
+                            <td>@offerte.Date</td>
+                            <td>@offerte.ExperationDate</td>
+                            <td><button class="btn btn-success" @onclick="(() => MaakFactuur(offerte.Id))">Maak Factuur</button></td>
+                            <td><button class="btn-success" @onclick="(() => Preview(offerte.Id))">Preview Offerte</button></td>
+                            <td><button class="btn-success" @*@onclick=""*@>Download TODO</button></td>
+                            <td><button class="btn-danger" @onclick="(async () => await Delete(offerte.Id))">Delete</button></td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        @if (_customer.Invoices.Any())
+        {
+            <div class="row">
+                <h2>Facturen</h2>
+            </div>
+            <div class="row">
+                <table class="table col-sm">
+                    <thead>
+                        <tr>
+                            <th>Downloaded</th>
+                            <th>Factuurnummer</th>
+                            <th>Datum Factuur</th>
+                            <th>Offertenummer</th>
+                            <th>Download</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var invoiceDto in _customer.Invoices)
+                        {
+                            <tr>
+                                <td></td>
+                                <td>@invoiceDto.InvoiceNumber</td>
+                                <td>@invoiceDto.InvoiceDate.ToShortDateString()</td>
+                                <td>@invoiceDto.OfferId Link naar offerte todo</td>
+                                <td><button class="btn-success" @*@onclick=""*@>Download factuur TODO</button></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    ClientDetailDto _customer;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _customer = await Http.GetFromJsonAsync<ClientDetailDto>($"api/clients/{Id}");
+    }
+
+    private async Task ReloadPage()
+    {
+
+    }
+
+    private void AddOfferteVoorKlant()
+    {
+
+    }
+
+    private async Task DownloadPdf(Guid offerteId, string offerteNummer)
+    {
+
+
+    }
+
+    private void Preview(Guid offerteId)
+    {
+
+    }
+
+    private async Task DownloadExcel(Guid offerteId, string offerteNummer)
+    {
+
+    }
+
+    private async Task Delete(Guid offerteId)
+    {
+
+    }
+
+    private async Task DeleteCustomer()
+    {
+
+    }
+
+    private async Task MaakFactuur(Guid offerteId)
+    {
+
+    }
+
+    private async Task PreviewFactuur(Guid factuurId)
+    {
+
+    }
+
+    private async Task DownloadExcelFactuur(Guid factuurId, string factuurNummer)
+    {
+
+    }
+
+    private async Task DeleteFactuur(Guid factuurId)
+    {
+
+    }
+}

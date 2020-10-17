@@ -6,6 +6,7 @@ namespace Models.Read
 {
     public class OfferDto : IDto
     {
+        public Guid Id { get; set; }
         public string OfferNumber { get; set; }
         public DateTime ExperationDate { get; set; }
         public DateTime Date { get; set; }
