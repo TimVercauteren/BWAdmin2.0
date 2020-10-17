@@ -3,8 +3,8 @@
     [Description]      NVARCHAR (MAX)   NULL,
     [NettoPrice]       DECIMAL (18, 2)  NOT NULL,
     [MarginPercentage] DECIMAL (18, 2)  NOT NULL,
-    [InvoiceId]        UNIQUEIDENTIFIER NULL,
-    [OfferId]          UNIQUEIDENTIFIER NULL,
+    [OfferId]          UNIQUEIDENTIFIER NOT NULL,
+    [InvoiceId]        UNIQUEIDENTIFIER NOT NULL,
     CONSTRAINT [PK_WorkItem] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_WorkItem_Invoices_InvoiceId] FOREIGN KEY ([InvoiceId]) REFERENCES [dbo].[Invoices] ([Id]),
     CONSTRAINT [FK_WorkItem_Offers_OfferId] FOREIGN KEY ([OfferId]) REFERENCES [dbo].[Offers] ([Id])

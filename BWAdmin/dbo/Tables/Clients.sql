@@ -2,12 +2,12 @@
     [Id]              UNIQUEIDENTIFIER NOT NULL,
     [ClientReference] INT              NOT NULL,
     [IsDeleted]       BIT              NOT NULL,
-    [RekeningNummer]  NVARCHAR (MAX)   NULL,
+    [AccountNumber]   NVARCHAR (MAX)   NULL,
     [UserId]          UNIQUEIDENTIFIER NOT NULL,
     [InfoId]          UNIQUEIDENTIFIER NOT NULL,
     CONSTRAINT [PK_Clients] PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_Clients_PersonInfo_InfoId] FOREIGN KEY ([InfoId]) REFERENCES [dbo].[PersonInfo] ([Id]) ON DELETE CASCADE,
-    CONSTRAINT [FK_Clients_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [dbo].[Users] ([Id])
+    CONSTRAINT [FK_Clients_AppUsers_UserId] FOREIGN KEY ([UserId]) REFERENCES [dbo].[AppUsers] ([Id]),
+    CONSTRAINT [FK_Clients_PersonInfo_InfoId] FOREIGN KEY ([InfoId]) REFERENCES [dbo].[PersonInfo] ([Id]) ON DELETE CASCADE
 );
 
 

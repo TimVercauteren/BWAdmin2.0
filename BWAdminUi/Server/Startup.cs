@@ -1,18 +1,20 @@
+using System;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Linq;
+using AutoMapper;
 using BWAdminUi.Server.Data;
 using BWAdminUi.Server.Models;
+using BWAdminUi.Server.Repositories;
+using BWAdminUi.Server.Repositories.Interfaces;
+using BWAdminUi.Server.Setup;
+using Data;
+using Microsoft.Extensions.Logging;
+using NLog.Extensions.Logging;
 
 namespace BWAdminUi.Server
 {
@@ -29,6 +31,28 @@ namespace BWAdminUi.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllers();
+            services.AddRouting(options => options.LowercaseUrls = true);
+
+            services.AddScoped<IClientRepository, ClientRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IWorkItemRepository, WorkItemRepository>();
+            services.AddScoped<IInfoRepository, InfoRepository>();
+            services.AddScoped<IOfferRepository, OfferRepository>();
+            services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+
+
+
+            services.AddLogging(config =>
+            {
+                config.AddDebug();
+                config.AddNLog();
+            });
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            services.AddSwaggerGen();
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
@@ -47,7 +71,7 @@ namespace BWAdminUi.Server
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDbContext context)
         {
             if (env.IsDevelopment())
             {
@@ -62,6 +86,13 @@ namespace BWAdminUi.Server
                 app.UseHsts();
             }
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "BWAdmin V1");
+                c.RoutePrefix = string.Empty;
+            });
+
             app.UseHttpsRedirection();
             app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
@@ -71,6 +102,8 @@ namespace BWAdminUi.Server
             app.UseIdentityServer();
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseBwExceptionHandler();
+
 
             app.UseEndpoints(endpoints =>
             {
@@ -78,6 +111,9 @@ namespace BWAdminUi.Server
                 endpoints.MapControllers();
                 endpoints.MapFallbackToFile("index.html");
             });
+
+            app.EnsureBwUserExists(context, Configuration);
+
         }
     }
 }

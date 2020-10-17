@@ -5,7 +5,7 @@
     [Date]           DATETIME2 (7)    NOT NULL,
     [FileName]       NVARCHAR (MAX)   NULL,
     [IsDeleted]      BIT              NOT NULL,
-    [VatPercentage]  INT              NOT NULL,
+    [VatPercentage]  DECIMAL (18, 2)  NOT NULL,
     [PrePaid]        DECIMAL (18, 2)  NOT NULL,
     [ClientId]       UNIQUEIDENTIFIER NOT NULL,
     [InvoiceId]      UNIQUEIDENTIFIER NOT NULL,
