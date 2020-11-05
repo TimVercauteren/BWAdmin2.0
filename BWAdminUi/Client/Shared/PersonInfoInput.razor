@@ -1,0 +1,75 @@
+﻿@using Models.Post
+@inject HttpClient Http
+<div class="row">
+    <div class="col-sm">
+        <input type="text" placeholder="Naam" @bind="Customer.Name" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm">
+        <input type="email" placeholder="Email" @bind="Customer.Email" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm">
+        <input type="tel" placeholder="Telefoon" @bind="Customer.TelefoonNummer" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm">
+        <input type="text" placeholder="Straat" @bind="Customer.StraatNaam" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm">
+        <input type="text" placeholder="Huisnummer" @bind="Customer.HuisNummer" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm">
+        <input type="text" placeholder="Bus" @bind="Customer.BusNummer" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm">
+        <input type="text" placeholder="Postcode" @bind="Customer.Postcode" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm">
+        <input type="text" placeholder="Gemeente" @bind="Customer.Gemeente" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm">
+        <input type="text" placeholder="Btw nummer" @bind="Customer.BtwNummer" />
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm">
+        <button class="btn-info mt-1 text-center col-sm-4" @onclick="( async () => await AddOrUpdateClient())">Bewaren</button>
+    </div>
+</div>
+
+
+@code {
+
+    [Parameter] public PersonInfoDto Customer { get; set; }
+    [Parameter] public bool IsUpdate { get; set; }
+
+    private async Task AddOrUpdateClient()
+    {
+        if (IsUpdate)
+        {
+            await Http.PutAsync($"api/clients/{Customer.Id}", JsonContent.Create(Customer, typeof(PersonInfoDto)));
+
+        }
+        else
+        {
+            await Http.PostAsync("api/clients", JsonContent.Create(Customer, typeof(PersonInfoDto)));
+        }
+
+    }
+
+}

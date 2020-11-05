@@ -44,11 +44,8 @@ namespace BWAdminUi.Server.Repositories
             return Mapper.Map<ClientDetailDto>(client);
         }
 
-        public async Task<global::Data.Entities.Client> AddClient(global::Data.Entities.Client client)
+        public async Task<global::Data.Entities.Client> AddClient(global::Data.Entities.Client client, string userId)
         {
-            var userId = await _userRepository.GetDefaultUserId();
-
-
             if (client.Id == Guid.Empty)
             {
                 client.Id = Guid.NewGuid();

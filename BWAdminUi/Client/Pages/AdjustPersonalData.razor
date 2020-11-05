@@ -1,0 +1,51 @@
+@page "/myinfo"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Models.Post
+@using Models.Read
+@using Pages.PersonInfo
+@attribute [Authorize]
+@inject HttpClient Http
+@inject IHttpContextAccessor contextAccessor
+
+<h1>Data gebruiker</h1>
+
+
+@if (_user == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <PersonInfoInput Customer=@_userInfo IsUpdate=@_isUpdate />
+}
+
+@code {
+    private UserWithInfoDto _user;
+    private PersonInfoDto _userInfo;
+    private bool _isUpdate = true;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _user = await Http.GetFromJsonAsync<UserWithInfoDto>("api/users/");
+
+            if (_user?.UserInfo == null)
+            {
+                _isUpdate = false;
+                _userInfo = new PersonInfoDto();
+            }
+            else
+            {
+                _userInfo = _user.UserInfo;
+            }
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+    }
+
+}

@@ -22,31 +22,6 @@ namespace BWAdminUi.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUsers",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    UserName = table.Column<string>(maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
-                    Email = table.Column<string>(maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(nullable: false),
-                    PasswordHash = table.Column<string>(nullable: true),
-                    SecurityStamp = table.Column<string>(nullable: true),
-                    ConcurrencyStamp = table.Column<string>(nullable: true),
-                    PhoneNumber = table.Column<string>(nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
-                    LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "DeviceCodes",
                 columns: table => new
                 {
@@ -81,7 +56,7 @@ namespace BWAdminUi.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PersonInfo",
+                name: "PersonInfos",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -93,11 +68,12 @@ namespace BWAdminUi.Server.Migrations
                     Gemeente = table.Column<string>(nullable: true),
                     Email = table.Column<string>(nullable: true),
                     TelefoonNummer = table.Column<string>(nullable: true),
-                    BtwNummer = table.Column<string>(nullable: true)
+                    BtwNummer = table.Column<string>(nullable: true),
+                    UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PersonInfo", x => x.Id);
+                    table.PrimaryKey("PK_PersonInfos", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -119,6 +95,38 @@ namespace BWAdminUi.Server.Migrations
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUsers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    UserName = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
+                    Email = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(nullable: false),
+                    PasswordHash = table.Column<string>(nullable: true),
+                    SecurityStamp = table.Column<string>(nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
+                    LockoutEnabled = table.Column<bool>(nullable: false),
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    UserInfoId = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_PersonInfos_UserInfoId",
+                        column: x => x.UserInfoId,
+                        principalTable: "PersonInfos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -207,27 +215,6 @@ namespace BWAdminUi.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AppUsers",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    Username = table.Column<string>(nullable: true),
-                    Password = table.Column<string>(nullable: true),
-                    IsDeleted = table.Column<bool>(nullable: false),
-                    PersonInfoId = table.Column<Guid>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AppUsers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AppUsers_PersonInfo_PersonInfoId",
-                        column: x => x.PersonInfoId,
-                        principalTable: "PersonInfo",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Clients",
                 columns: table => new
                 {
@@ -235,23 +222,24 @@ namespace BWAdminUi.Server.Migrations
                     ClientReference = table.Column<int>(nullable: false),
                     IsDeleted = table.Column<bool>(nullable: false),
                     AccountNumber = table.Column<string>(nullable: true),
-                    UserId = table.Column<Guid>(nullable: false),
+                    UserId = table.Column<string>(nullable: true),
                     InfoId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Clients", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Clients_PersonInfo_InfoId",
+                        name: "FK_Clients_PersonInfos_InfoId",
                         column: x => x.InfoId,
-                        principalTable: "PersonInfo",
+                        principalTable: "PersonInfos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Clients_AppUsers_UserId",
+                        name: "FK_Clients_AspNetUsers_UserId",
                         column: x => x.UserId,
-                        principalTable: "AppUsers",
-                        principalColumn: "Id");
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -335,12 +323,6 @@ namespace BWAdminUi.Server.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AppUsers_PersonInfoId",
-                table: "AppUsers",
-                column: "PersonInfoId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
                 column: "RoleId");
@@ -378,6 +360,11 @@ namespace BWAdminUi.Server.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_UserInfoId",
+                table: "AspNetUsers",
+                column: "UserInfoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Clients_InfoId",
@@ -468,9 +455,6 @@ namespace BWAdminUi.Server.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
                 name: "Invoices");
 
             migrationBuilder.DropTable(
@@ -480,10 +464,10 @@ namespace BWAdminUi.Server.Migrations
                 name: "Clients");
 
             migrationBuilder.DropTable(
-                name: "AppUsers");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "PersonInfo");
+                name: "PersonInfos");
         }
     }
 }

@@ -1,9 +1,9 @@
-﻿using BWAdminUi.Server.Models;
-using Data.Entities;
+﻿using Data.Entities;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using ClientEntity = Data.Entities.Client;
 
 namespace BWAdminUi.Server.Data
 {
@@ -13,33 +13,22 @@ namespace BWAdminUi.Server.Data
         {
         }
 
-        public DbSet<User> AppUsers { get; set; }
-        public DbSet<global::Data.Entities.Client> Clients { get; set; }
+        public DbSet<ApplicationUser> AppUsers { get; set; }
+        public DbSet<ClientEntity> Clients { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<Offer> Offers { get; set; }
+        public DbSet<PersonInfo> PersonInfos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            #region UserEntity
-            var user = modelBuilder.Entity<User>();
-
-            user.HasOne(x => x.UserInfo)
-                .WithOne();
-
-            user.HasMany(c => c.Clients)
-                .WithOne(u => u.User)
-                .HasForeignKey(c => c.UserId)
-                .OnDelete(DeleteBehavior.NoAction);
-            #endregion
 
             #region ClientEntity
             var client = modelBuilder.Entity<global::Data.Entities.Client>();
 
             client.HasOne(c => c.Info)
                 .WithOne()
-                .HasForeignKey<global::Data.Entities.Client>(c => c.InfoId);
+                .HasForeignKey<ClientEntity>(c => c.InfoId);
 
             client.HasMany(c => c.Offers)
                 .WithOne(o => o.Client)
@@ -48,7 +37,14 @@ namespace BWAdminUi.Server.Data
             client.HasMany(c => c.Invoices)
                 .WithOne(i => i.Client)
                 .HasForeignKey(i => i.ClientId);
+
             #endregion
+
+
+            #region UserEntity
+            var user = modelBuilder.Entity<ApplicationUser>();
+            #endregion
+
 
             #region InvoiceEntity
             var invoice = modelBuilder.Entity<Invoice>();
@@ -80,11 +76,6 @@ namespace BWAdminUi.Server.Data
                 .OnDelete(DeleteBehavior.NoAction);
             #endregion
 
-            #region WorkItem
-
-            
-
-            #endregion
 
         }
     }

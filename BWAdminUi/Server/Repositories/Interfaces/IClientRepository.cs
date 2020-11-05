@@ -10,6 +10,6 @@ namespace BWAdminUi.Server.Repositories.Interfaces
     {
         Task<IEnumerable<ClientDto>> GetAll();
         Task<ClientDetailDto> GetClient(Guid id);
-        Task<global::Data.Entities.Client> AddClient(global::Data.Entities.Client client);
+        Task<global::Data.Entities.Client> AddClient(global::Data.Entities.Client client, string userId);
     }
 }

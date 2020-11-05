@@ -1,0 +1,38 @@
+﻿@page "/contactinfo/new"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Models.Post
+@attribute [Authorize]
+@inject HttpClient Http
+
+<div class="row">
+    <h1>Nieuwe contactinfo</h1>
+</div>
+<div class="row">
+    <p>Gelieve de contactinfo in te vullen (velden mogen leeg blijven) </p>
+</div>
+
+<PersonInfoInput Customer=@_customer IsUpdate =@false/>
+
+@code {
+
+    private PersonInfoDto _customer;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _customer = new PersonInfoDto();
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+    }
+
+
+    private async Task AddClient()
+    {
+        await Http.PostAsync("api/clients", JsonContent.Create(_customer, typeof(PersonInfoDto)));
+    }
+}

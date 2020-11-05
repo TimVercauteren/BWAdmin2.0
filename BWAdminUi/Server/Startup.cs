@@ -8,11 +8,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using AutoMapper;
 using BWAdminUi.Server.Data;
-using BWAdminUi.Server.Models;
 using BWAdminUi.Server.Repositories;
 using BWAdminUi.Server.Repositories.Interfaces;
 using BWAdminUi.Server.Setup;
-using Data;
+using Data.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
@@ -28,8 +27,6 @@ namespace BWAdminUi.Server
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
@@ -42,6 +39,7 @@ namespace BWAdminUi.Server
             services.AddScoped<IOfferRepository, OfferRepository>();
             services.AddScoped<IInvoiceRepository, InvoiceRepository>();
 
+            services.AddHttpContextAccessor();
 
 
             services.AddLogging(config =>
@@ -122,8 +120,17 @@ namespace BWAdminUi.Server
                 endpoints.MapFallbackToFile("index.html");
             });
 
-            app.EnsureBwUserExists(context, Configuration);
+            UpdateDatabase(app);
 
+        }
+
+        private static void UpdateDatabase(IApplicationBuilder app)
+        {
+            using var serviceScope = app.ApplicationServices
+                .GetRequiredService<IServiceScopeFactory>()
+                .CreateScope();
+            using var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
+            context.Database.Migrate();
         }
     }
 }

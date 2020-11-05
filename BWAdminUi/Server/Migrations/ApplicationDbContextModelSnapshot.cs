@@ -15,11 +15,11 @@ namespace BWAdminUi.Server.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.6")
+                .HasAnnotation("ProductVersion", "3.1.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("BWAdminUi.Server.Models.ApplicationUser", b =>
+            modelBuilder.Entity("Data.Entities.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -67,6 +67,9 @@ namespace BWAdminUi.Server.Migrations
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
+                    b.Property<Guid?>("UserInfoId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
@@ -80,6 +83,8 @@ namespace BWAdminUi.Server.Migrations
                         .IsUnique()
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("UserInfoId");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -101,8 +106,8 @@ namespace BWAdminUi.Server.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -218,34 +223,12 @@ namespace BWAdminUi.Server.Migrations
                     b.Property<string>("TelefoonNummer")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
-
-                    b.ToTable("PersonInfo");
-                });
-
-            modelBuilder.Entity("Data.Entities.User", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Password")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("PersonInfoId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Username")
+                    b.Property<string>("UserId")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PersonInfoId")
-                        .IsUnique();
-
-                    b.ToTable("AppUsers");
+                    b.ToTable("PersonInfos");
                 });
 
             modelBuilder.Entity("Data.Entities.WorkItem", b =>
@@ -494,6 +477,13 @@ namespace BWAdminUi.Server.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Data.Entities.ApplicationUser", b =>
+                {
+                    b.HasOne("Data.Entities.PersonInfo", "UserInfo")
+                        .WithMany()
+                        .HasForeignKey("UserInfoId");
+                });
+
             modelBuilder.Entity("Data.Entities.Client", b =>
                 {
                     b.HasOne("Data.Entities.PersonInfo", "Info")
@@ -502,11 +492,9 @@ namespace BWAdminUi.Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Data.Entities.User", "User")
+                    b.HasOne("Data.Entities.ApplicationUser", "User")
                         .WithMany("Clients")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Data.Entities.Invoice", b =>
@@ -529,15 +517,6 @@ namespace BWAdminUi.Server.Migrations
                     b.HasOne("Data.Entities.Client", "Client")
                         .WithMany("Offers")
                         .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Data.Entities.User", b =>
-                {
-                    b.HasOne("Data.Entities.PersonInfo", "UserInfo")
-                        .WithOne()
-                        .HasForeignKey("Data.Entities.User", "PersonInfoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -568,7 +547,7 @@ namespace BWAdminUi.Server.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("BWAdminUi.Server.Models.ApplicationUser", null)
+                    b.HasOne("Data.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -577,7 +556,7 @@ namespace BWAdminUi.Server.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("BWAdminUi.Server.Models.ApplicationUser", null)
+                    b.HasOne("Data.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -592,7 +571,7 @@ namespace BWAdminUi.Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BWAdminUi.Server.Models.ApplicationUser", null)
+                    b.HasOne("Data.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -601,7 +580,7 @@ namespace BWAdminUi.Server.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("BWAdminUi.Server.Models.ApplicationUser", null)
+                    b.HasOne("Data.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

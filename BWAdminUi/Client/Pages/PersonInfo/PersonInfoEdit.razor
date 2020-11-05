@@ -1,0 +1,46 @@
+﻿@page "/contactinfo/edit/{id}"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Models.Post
+@attribute [Authorize]
+@inject HttpClient Http
+
+
+@if (_customer == null)
+{
+    <p><em>Loading....</em></p>
+}
+else
+{
+    <div class="row">
+        <h1>Aanpassen contactinfo</h1>
+    </div>
+
+    <PersonInfoInput Customer=@_customer IsUpdate =@true/>
+}
+
+@code {
+
+    private PersonInfoDto _customer;
+    [Parameter] public Guid ClientId { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _customer = await Http.GetFromJsonAsync<PersonInfoDto>($"api/clients/{ClientId}");
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+    }
+
+
+    private async Task EditClient()
+    {
+        await Http.PutAsync($"api/clients/{ClientId}", JsonContent.Create(_customer, typeof(PersonInfoDto)));
+    }
+
+}

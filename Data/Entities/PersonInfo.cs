@@ -11,5 +11,7 @@
         public string Email { get; set; }
         public string TelefoonNummer { get; set; }
         public string BtwNummer { get; set; }
+
+        public string UserId { get; set; }
     }
 }

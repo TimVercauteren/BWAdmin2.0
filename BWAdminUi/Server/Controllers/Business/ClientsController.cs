@@ -5,16 +5,18 @@ using AutoMapper;
 using BWAdminUi.Server.Repositories.Interfaces;
 using BWAdminUi.Server.Setup;
 using Data.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Models.Post;
 using Models.Read;
+using ClientEntity = Data.Entities.Client;
 
 namespace BWAdminUi.Server.Controllers.Business
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ClientsController : ControllerBase
+    public class ClientsController : Controller
     {
         private readonly ILogger<ClientsController> _logger;
         private readonly IClientRepository _repository;
@@ -41,8 +43,8 @@ namespace BWAdminUi.Server.Controllers.Business
 
         [ProducesResponseType(typeof(ClientDetailDto), 200)]
         [ProducesDefaultResponseType(typeof(ApiError))]
-        [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] Guid id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get([FromRoute] Guid id)
         {
             var result = await _repository.GetClient(id);
             return Ok(result);
@@ -51,10 +53,12 @@ namespace BWAdminUi.Server.Controllers.Business
         [ProducesResponseType(typeof(ClientDto), 201)]
         [ProducesDefaultResponseType(typeof(ApiError))]
         [HttpPost]
-        public async Task<IActionResult> AddClient([FromBody] ClientDto client)
+        public async Task<IActionResult> AddClient([FromBody] ClientDto client, [FromServices] UserManager<ApplicationUser> userManager)
         {
+            var user = this.User;
+            var userId = userManager.GetUserId(user);
 
-            var result = await _repository.AddClient(_mapper.Map<global::Data.Entities.Client>(client));
+            var result = await _repository.AddClient(_mapper.Map<ClientEntity>(client), userId);
 
             return CreatedAtAction(nameof(Get), new { id = result.Id }, _mapper.Map<ClientDto>(result));
         }
@@ -74,7 +78,7 @@ namespace BWAdminUi.Server.Controllers.Business
         [ProducesDefaultResponseType(typeof(ApiError))]
         public async Task<IActionResult> DeleteClient([FromRoute] Guid id)
         {
-            await _repository.DeleteEntity<global::Data.Entities.Client>(id);
+            await _repository.DeleteEntity<ClientEntity>(id);
 
             return Ok();
         }
