@@ -1,13 +1,13 @@
 @page "/myinfo"
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Microsoft.AspNetCore.Http
 @using Models.Post
 @using Models.Read
 @using Pages.PersonInfo
 @attribute [Authorize]
 @inject HttpClient Http
-@inject IHttpContextAccessor contextAccessor
-
+@inject IHttpContextAccessor context
 <h1>Data gebruiker</h1>
 
 
@@ -30,6 +30,7 @@ else
     {
         try
         {
+            var identity = context.HttpContext.User.Identity;
             _user = await Http.GetFromJsonAsync<UserWithInfoDto>("api/users/");
 
             if (_user?.UserInfo == null)
